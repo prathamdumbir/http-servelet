@@ -1,0 +1,200 @@
+page1
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+
+import javax.servlet.ServletException;
+
+import javax.servlet.http.HttpServlet;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
+
+public class Page1 extends HttpServlet {
+
+    @Override
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+
+PrintWriter out=response.getWriter();
+
+RequestDispatcher rd;
+
+String login=request.getParameter("login");
+
+
+
+if(login.equals("utsav") )
+
+{   HttpSession hs=request.getSession();
+
+    hs.setAttribute("s_id",login); 
+
+    out.print("<body bgcolor='Plum'>");
+
+    out.println("Session Created");
+
+    out.print("<a href='Page2'>Homepage</a>");  
+
+    out.print("</body>");
+
+}
+
+else
+
+{   out.println("<p><h1>Incorrect Login Id/Password</h1></p>");
+
+    rd=request.getRequestDispatcher("/httpsession.html");
+
+    rd.include(request, response);}
+
+
+
+    }
+
+}
+page2
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+
+import javax.servlet.http.HttpServlet;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
+
+public class Page2 extends HttpServlet
+
+{@Override
+
+   public void doGet(HttpServletRequest request,HttpServletResponse response)
+
+            	   throws ServletException,IOException
+
+   {response.setContentType("text/html");
+
+    PrintWriter out=response.getWriter();
+
+    HttpSession hs=request.getSession(false);  
+
+    String n=(String)hs.getAttribute("s_id");  
+
+    out.print("<body bgcolor='Violet'>");
+
+    out.print("Hello "+n); 
+
+    out.print("<p><a href='Page3'>visit</a></p>");  
+
+     
+
+} }
+page3
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+
+import javax.servlet.http.HttpServlet;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
+
+public class Page3 extends HttpServlet
+
+{@Override
+
+   public void doGet(HttpServletRequest request,HttpServletResponse response)
+
+            	   throws ServletException,IOException
+
+  {response.setContentType("text/html");
+
+   PrintWriter out=response.getWriter();
+
+   HttpSession hs=request.getSession(false);  
+
+   String n=(String)hs.getAttribute("s_id"); 
+
+   out.print("<body bgcolor='Orchid'>");
+
+   out.print("Hello again"+n); 
+
+   out.println("<form action='/Httpses/Page4'>");
+
+   out.println("<p><input type='submit'value='End Session'></p></form>");
+
+   out.print("</body>");
+
+   hs.invalidate();   
+
+  }
+
+}
+
+
+page4
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+
+import javax.servlet.http.HttpServlet;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
+
+public class Page4 extends HttpServlet {
+
+@Override
+
+public void doGet(HttpServletRequest request,HttpServletResponse response)
+
+          throws ServletException,IOException
+
+{ response.setContentType("text/html");
+
+   PrintWriter out=response.getWriter();
+
+   HttpSession hs=request.getSession(false); 
+
+   try
+
+	{	String n=(String)hs.getAttribute("s_id");  
+
+	} catch(NullPointerException ne)
+
+      {out.println("Session Invalidated");}
+
+   out.print("<body bgcolor='MediumOrchid'>");
+
+  out.println("<form action='/Httpses/index.html'>");
+
+  out.println("<p><input type='submit'value='logout'></p></form>");
+
+  out.print("</body>");
+
+}
+
+}
